@@ -1,6 +1,6 @@
 {
   "name": "docker-swarm-ci",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "CI for use with docker swarm and git.",
   "homepage": "https://github.com/mini-eggs/docker-swarm-ci",
   "author": "Evan M Jones <evanjones4040@gmail.com (http://evanjon.es/)",
