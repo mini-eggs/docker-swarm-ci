@@ -22,4 +22,8 @@ Which events would you like to trigger this webhook: Just the push event.
 
 #### Example usage
 
+SSH into your swarm leader
+
+Start a screen seession, then run:
+
 `$ docker-swarm-ci --git GIT_REPO --swarm SWARM_ID --registry REGISTRY_URL --name DESIRED_NAME_WITHIN_IMAGE --password GIT_HOOK_PASSWORD --port LISTEN_PORT`
