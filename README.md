@@ -13,8 +13,11 @@ Withing Github navigate to:
 Settings > Webhooks > Add webhook
 
 Payload URL: http(s)://YOUR_URL:LISTEN_PORT/api/git
+
 Content Type: application/json
+
 Secret: GIT_HOOK_PASSWORD
+
 Which events would you like to trigger this webhook: Just the push event.
 
 #### Example usage
