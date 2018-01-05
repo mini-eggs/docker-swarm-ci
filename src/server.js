@@ -1,14 +1,9 @@
 import Express from "express";
 import { json } from "body-parser";
-import API from "./api";
+import CreateGitWebhook from "./git";
 
 const cors = () => (_, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  next();
-};
-
-const pass_props = i => (req, _, next) => {
-  req.instance_options = i;
+  res.setHeader("Access-Control-Allow-Origin", "*"); // May want to set this to just GitHub.
   next();
 };
 
@@ -18,20 +13,18 @@ const hooks = () => (_, res, next) => {
   next();
 };
 
-export const start_server = options => {
+export const start_server = ({ port, options }) => {
   const app = new Express();
 
   app.use(json());
   app.use(cors());
-  app.use(pass_props(options));
   app.use(hooks());
-  app.use("/api", API);
+  options.forEach(i => app.use(CreateGitWebhook(i)));
+  app.all("*", (_, res) => res.fail({ message: "Not found." }));
 
-  app.all("*", (_, res) => {
-    res.success({ message: "Not found." });
-  });
-
-  app.listen(options.port, () => {
-    console.log(`\n\tProcess has started on port ${options.port}\n`);
+  app.listen(port, () => {
+    const webhooks = options.map(i => `\t/${i.swarm}`).join("\n");
+    console.log(`\n\tProcess has started on port ${port}\n`);
+    console.log(`\tWebhooks created:\n\n${webhooks}\n`);
   });
 };

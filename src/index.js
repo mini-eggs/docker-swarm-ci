@@ -1,25 +1,27 @@
-import CLA from "command-line-args";
-import { collect_errors } from "./errors";
+import Commands from "command-line-args";
+import { verify, format } from "./input";
 import { start_server } from "./server";
 
 /**
  * Available CLI options.
  */
-const definitions = [
+const input = Commands([
   { name: "git", type: String },
   { name: "registry", type: String },
   { name: "swarm", type: String },
   { name: "name", type: String },
   { name: "port", type: Number },
-  { name: "password", type: String }
-];
+  { name: "password", type: String },
+  { name: "json", type: String }
+]);
 
-const options = CLA(definitions);
-const errors = collect_errors(options);
-
-if (errors.length > 0) {
-  console.error(`\n\tErrors:\n\n${errors.map(i => `\t${i}`).join("\n")}\n`);
+const fail = errors => {
+  const message = errors.map(i => `\t${i}`).join("\n");
+  console.error(`\n\tErrors:\n\n${message}\n`);
   process.exit(1);
-}
+};
 
-start_server(options);
+format(input)
+  .then(i => verify(i))
+  .then(i => start_server(i))
+  .catch(i => fail(i));
