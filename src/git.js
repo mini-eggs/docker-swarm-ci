@@ -25,8 +25,8 @@ const run_update = async ({ git, swarm, registry, name }) => {
     await exec(`docker tag ${image} ${full_image}`);
     await exec(`docker push ${full_image}`);
     await exec(`rm -rf ${dir}`);
-    await exec(`docker service update -d --image ${full_image} ${swarm}`);
-    return console.log(`\n\t${swarm} has been updated.\n`);
+    exec(`docker service update --detach=false --image ${full_image} ${swarm}`);
+    return console.log(`\n\t${swarm} is now updating.\n`);
   } catch (e) {
     throw e;
   }
